@@ -1,7 +1,6 @@
 package prop.assignment0;
 
 import java.io.IOException;
-import java.io.FileInputStream;
 import java.util.*;
 
 public class Parser implements IParser {
@@ -13,9 +12,14 @@ public class Parser implements IParser {
 	public void open(String fileName) throws IOException, TokenizerException {
 		scanner.open(fileName);
 		String word = "";
-		while("" + scanner.current() != " ")
-			word += scanner.current();
-		wordArray.add(word);
+		while(scanner.current() != EOF) {
+			scanner.moveNext();
+			while("" + scanner.current() != " ") {
+				word += scanner.current();
+				scanner.moveNext();
+			}
+			wordArray.add(word);
+		}
 	}
 	
 	@Override
