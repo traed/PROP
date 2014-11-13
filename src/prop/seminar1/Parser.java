@@ -62,25 +62,28 @@ public class Parser implements IParser {
     }
     private void text(){
 	//text = sentence, [text];
-	sentence();
+	INode text = new TextNode();
+	text.bind(sentence());
 	text();
     }
-    private void sentence(){
+    private INode sentence(){
 	//sentence = nounphrase, verbphrase, '.';
-	nounphrase();
-	verbphrase();
+	INode sentence = new SentenceNode();
+	sentence.bind(nounphrase());
+	sentence.bind(verbphrase());
 	
 	if(lookahead.token() == Token.EOS){
 	    INode node = new EOSNode(lookahead.value());
 	    nextLex();
-	    return node;
+	    sentence.bind(node);
 	}
+	return sentence;
     }
-    private void nounphrase(){
+    private INode nounphrase(){
 	//nounphrase = delimiter, noun;
 	INode node;
 	if(lookahead.token() == Token.DELIMITER){
-	    node = new DelimiterNode(lookahead.value());
+	    INode node = new DelimiterNode(lookahead.value());
 	    nextLex();
 	    return node;
 	}
@@ -97,7 +100,7 @@ public class Parser implements IParser {
 	    nextLex();
 	    return node;
 	}
-	nounphrase();
+	return nounphrase();
     }
     
     @Override
