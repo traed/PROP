@@ -16,7 +16,12 @@ public class SentenceNode implements INode {
 
 	@Override
 	public void buildString(StringBuilder builder, int tabs) {
-
+	    if(leftChild != null)
+		leftChild.buildString(builder, tabs);
+	    if(rightChild != null)
+		rightChild.buildString(builder, tabs);
+	    if(leftChild == null && rightChild == null)
+		builder.append(text);
 	}
 
 	public void setLeftChild(INode child) {
@@ -48,9 +53,9 @@ public class SentenceNode implements INode {
 		return text;
 	}
 	public void bind(INode node) {
-		if(rightChild != null)
+		if(rightChild == null)
 			rightChild = node;
-		else if(leftChild != null)
+		else if(leftChild == null)
 			leftChild = node;
 	}
 

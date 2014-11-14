@@ -21,7 +21,7 @@ public class VerbNode implements INode {
 
 	@Override
 	public void buildString(StringBuilder builder, int tabs) {
-
+	    builder.append(lexeme.value() + "\n");
 	}
 
 	public Lexeme getLexeme(){

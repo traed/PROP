@@ -39,6 +39,7 @@ public class Parser implements IParser {
 		e.printStackTrace();
 	}*/
 	tokenizer.close();
+	System.out.println(lexemeList);
     }
 	
     @Override
@@ -55,22 +56,24 @@ public class Parser implements IParser {
 
     private void nextLex(){
 	lexemeList.pop();
-	if(lexemeList.isEmpty())
+	if(lexemeList == null)
 	    lookahead = null;
 	else
 	    lookahead = lexemeList.getFirst();
     }
     private INode text(){
 	//text = sentence, [text];
-	if(lookahead == null)
-	    return null;
 	TextNode text = new TextNode();
 	try{
 	    text.bind(sentence());
 	} catch(ParserException pe) {
 	    System.err.println(pe.getMessage());
 	}
-	text();
+	//nextLex();
+	if(lookahead != null)
+	    System.out.println("rek");
+	    //text();
+
 	return text;
     }
     private INode sentence() throws ParserException {
@@ -79,7 +82,7 @@ public class Parser implements IParser {
 	sentence.bind(nounphrase());
 	sentence.bind(verbphrase());
 	
-	if(lookahead.token() == Token.EOS){
+	if(lookahead.token() != Token.EOS){
 	    throw new ParserException("Reached EOS but no EOS symbol found.");
 	}
 	return sentence;

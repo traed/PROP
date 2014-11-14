@@ -4,7 +4,7 @@ import java.util.Arrays;
 
 public class TextNode implements INode {
 
-	private String text;
+	private String text = "Childs are null";
 
 	private INode leftChild;
 	private INode rightChild;
@@ -18,12 +18,16 @@ public class TextNode implements INode {
 
 	@Override
 	public void buildString(StringBuilder builder, int tabs) {
-
+	    if(leftChild != null)
+		leftChild.buildString(builder, tabs);
+	    if(rightChild != null)
+		rightChild.buildString(builder, tabs);
+	    if(leftChild == null && rightChild == null)
+		builder.append(text);
 	}
 
 	public void setLeftChild(INode child) {
 		this.leftChild = child;
-
 	}
 
 	public void setRightChild(INode child) {
@@ -31,28 +35,24 @@ public class TextNode implements INode {
 	}
 
 	public INode getLeftChild() {
-
 		return leftChild;
 	}
 
 	public INode getRightChild() {
-
 		return rightChild;
 	}
 
 	public void setText(String text) {
-
 		this.text = text;
 	}
 
 	public String getText() {
-
 		return text;
 	}
 	public void bind(INode node) {
-		if(rightChild != null)
+		if(rightChild == null)
 			rightChild = node;
-		else if(leftChild != null)
+		else if(leftChild == null)
 			leftChild = node;
 	}
 }

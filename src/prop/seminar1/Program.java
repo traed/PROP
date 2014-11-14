@@ -22,7 +22,7 @@ public class Program {
 				
 				parser = new Parser();
 				parser.open(inputFileName);
-		/*		root = parser.parse();
+				root = parser.parse();
 				builder = new StringBuilder();
 				builder.append("PARSE TREE:\n");
 				root.buildString(builder, 0);
@@ -31,7 +31,7 @@ public class Program {
 				
 				stream = new FileOutputStream(outputFileName);
 				writer = new OutputStreamWriter(stream);
-				writer.write(builder.toString()); */
+				writer.write(builder.toString());
 			}
 			catch (Exception exception) {
 				System.out.println("EXCEPTION: " + exception);

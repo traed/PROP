@@ -21,7 +21,8 @@ public class DeterminerNode implements INode {
 
 	@Override
 	public void buildString(StringBuilder builder, int tabs) {
-
+	    System.out.println("Determiner Node!");
+	    builder.append(lexeme.value() + "\n");
 	}
 	
         public Lexeme getLexeme(){
