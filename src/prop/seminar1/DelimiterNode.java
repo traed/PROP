@@ -7,7 +7,7 @@ public class DelimiterNode implements INode {
 	private INode leftChild;
 	private INode rightChild;
     
-        public VerbNode(Lexeme lexeme){
+        public DelimiterNode(Lexeme lexeme){
 	    leftChild = null;
 	    rightChild = null;
 	    this.lexeme = lexeme;
@@ -28,7 +28,7 @@ public class DelimiterNode implements INode {
 	    return lexeme;
         }
         public String getValue(){
-	    return lexeme.value();
+	    return (String)lexeme.value();
         }
         public Token getToken(){
 	    return lexeme.token();
