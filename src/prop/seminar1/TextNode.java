@@ -30,12 +30,12 @@ public class TextNode implements INode {
 		this.rightChild = child;
 	}
 	
-	public INode leftChild() {
+	public INode getLeftChild() {
 		
 		return leftChild;
 	}
 	
-	public INode rightChild() {
+	public INode getRightChild() {
 		
 		return rightChild;
 	}
