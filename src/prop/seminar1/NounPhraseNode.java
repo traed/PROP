@@ -1,17 +1,16 @@
 package prop.seminar1;
 
-public class SentenceNode implements INode {
-
+public class NounPhraseNode implements INode {
+	
 	private String text;
 	
 	private INode leftChild;
 	private INode rightChild;
 	
-	
 	@Override
 	public Object evaluate(Object[] args) throws Exception {
-	
-		return this;
+
+		return null;
 	}
 
 	@Override
@@ -42,11 +41,5 @@ public class SentenceNode implements INode {
 		
 		this.text = text;
 	}
-	
-	public String getText() {
-		
-		return text;
-	}
-
 
 }

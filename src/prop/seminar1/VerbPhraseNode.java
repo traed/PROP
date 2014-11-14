@@ -1,22 +1,21 @@
 package prop.seminar1;
 
-public class SentenceNode implements INode {
-
+public class VerbPhraseNode implements INode {
+	
 	private String text;
 	
 	private INode leftChild;
 	private INode rightChild;
 	
-	
 	@Override
 	public Object evaluate(Object[] args) throws Exception {
-	
-		return this;
+
+		return null;
 	}
 
 	@Override
 	public void buildString(StringBuilder builder, int tabs) {
-
+		
 	}
 	
 	public void setLeftChild(INode child) {
@@ -42,11 +41,5 @@ public class SentenceNode implements INode {
 		
 		this.text = text;
 	}
-	
-	public String getText() {
-		
-		return text;
-	}
-
 
 }
