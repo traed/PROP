@@ -63,15 +63,19 @@ public class Parser implements IParser {
     private INode text(){
 	//text = sentence, [text];
 	if(lookahead == null)
-	    return;
-	INode text = new TextNode();
-	text.bind(sentence());
+	    return null;
+	TextNode text = new TextNode();
+	try{
+	    text.bind(sentence());
+	} catch(ParserException pe) {
+	    System.err.println(pe.getMessage());
+	}
 	text();
-	return node;
+	return text;
     }
-    private INode sentence(){
+    private INode sentence() throws ParserException {
 	//sentence = nounphrase, verbphrase, '.';
-	INode sentence = new SentenceNode();
+	SentenceNode sentence = new SentenceNode();
 	sentence.bind(nounphrase());
 	sentence.bind(verbphrase());
 	
@@ -82,14 +86,15 @@ public class Parser implements IParser {
     }
     private INode nounphrase(){
 	//nounphrase = delimiter, noun;
-	INode node, NPNode = new NounPhraseNode();
-	if(lookahead.token() == Token.DELIMITER){
-	    node = new DelimiterNode(lookahead.value());
+	NounPhraseNode NPNode = new NounPhraseNode();
+	INode node;
+	if(lookahead.token() == Token.DETERMINER){
+	    node = new DeterminerNode(lookahead);
 	    nextLex();
 	    NPNode.bind(node);
 	}
 	if(lookahead.token() == Token.NOUN){
-	    node = new NounNode(lookahead.value());
+	    node = new NounNode(lookahead);
 	    nextLex();
 	    NPNode.bind(node);
 	}
@@ -97,9 +102,9 @@ public class Parser implements IParser {
     }
     private INode verbphrase(){
 	//verbphrase = verb, nounphrase;
-	INode VPNode = new VerbPhraseNode();
+	VerbPhraseNode VPNode = new VerbPhraseNode();
 	if(lookahead.token() == Token.VERB){
-	    INode node = new VerbNode(lookahead.value());
+	    INode node = new VerbNode(lookahead);
 	    nextLex();
 	    VPNode.bind(node);
 	}

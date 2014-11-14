@@ -47,13 +47,11 @@ public class SentenceNode implements INode {
 
 		return text;
 	}
-	public void bind(INode node) throws ParserException {
+	public void bind(INode node) {
 		if(rightChild != null)
 			rightChild = node;
 		else if(leftChild != null)
 			leftChild = node;
-		else
-			throw new ParserException("Node already has two children");
 	}
 
 }

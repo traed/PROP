@@ -1,13 +1,13 @@
 package prop.seminar1;
 
-public class DelimiterNode implements INode {
+public class DeterminerNode implements INode {
 	
 	private Lexeme lexeme;
 	
 	private INode leftChild;
 	private INode rightChild;
     
-        public DelimiterNode(Lexeme lexeme){
+        public DeterminerNode(Lexeme lexeme){
 	    leftChild = null;
 	    rightChild = null;
 	    this.lexeme = lexeme;
