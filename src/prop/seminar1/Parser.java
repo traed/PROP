@@ -45,12 +45,12 @@ public class Parser implements IParser {
     public INode parse() throws IOException, TokenizerException,
 			ParserException {
 	lookahead = lexemeList.getFirst();
-	text();
+	INode textNode = text();
 
 	if(lookahead.token() != Token.EOS)
 	    throw new ParserException("Input error. Reached EOF but not EOF token was found.");
 	    
-	return null;
+	return textNode;
     }
 
     private void nextLex(){
@@ -60,11 +60,14 @@ public class Parser implements IParser {
 	else
 	    lookahead = lexemeList.getFirst();
     }
-    private void text(){
+    private INode text(){
 	//text = sentence, [text];
+	if(lookahead == null)
+	    return;
 	INode text = new TextNode();
 	text.bind(sentence());
 	text();
+	return node;
     }
     private INode sentence(){
 	//sentence = nounphrase, verbphrase, '.';
@@ -73,34 +76,35 @@ public class Parser implements IParser {
 	sentence.bind(verbphrase());
 	
 	if(lookahead.token() == Token.EOS){
-	    INode node = new EOSNode(lookahead.value());
-	    nextLex();
-	    sentence.bind(node);
+	    throw new ParserException("Reached EOS but no EOS symbol found.");
 	}
 	return sentence;
     }
     private INode nounphrase(){
 	//nounphrase = delimiter, noun;
-	INode node;
+	INode node, NPNode = new NounPhraseNode();
 	if(lookahead.token() == Token.DELIMITER){
-	    INode node = new DelimiterNode(lookahead.value());
+	    node = new DelimiterNode(lookahead.value());
 	    nextLex();
-	    return node;
+	    NPNode.bind(node);
 	}
 	if(lookahead.token() == Token.NOUN){
 	    node = new NounNode(lookahead.value());
 	    nextLex();
-	    return node;
+	    NPNode.bind(node);
 	}
+	return NPNode;
     }
     private INode verbphrase(){
 	//verbphrase = verb, nounphrase;
+	INode VPNode = new VerbPhraseNode();
 	if(lookahead.token() == Token.VERB){
 	    INode node = new VerbNode(lookahead.value());
 	    nextLex();
-	    return node;
+	    VPNode.bind(node);
 	}
-	return nounphrase();
+	VPNode.bind(nounphrase());
+	return VPNode;
     }
     
     @Override

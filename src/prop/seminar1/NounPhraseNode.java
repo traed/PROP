@@ -20,7 +20,6 @@ public class NounPhraseNode implements INode {
 	
 	public void setLeftChild(INode child) {
 		this.leftChild = child;
-		
 	}
 	
 	public void setRightChild(INode child) {
@@ -41,5 +40,12 @@ public class NounPhraseNode implements INode {
 		
 		this.text = text;
 	}
-
+        public void bind(INode node){
+	    if(rightChild != null)
+		rightChild = node;
+	    else if(leftChild != null)
+		leftChild = node;
+	    else
+		throw new ParserException("Node already has two children");
+        }
 }

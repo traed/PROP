@@ -41,5 +41,12 @@ public class VerbPhraseNode implements INode {
 		
 		this.text = text;
 	}
-
+        public void bind(INode node){
+	    if(rightChild != null)
+		rightChild = node;
+	    else if(leftChild != null)
+		leftChild = node;
+	    else
+		throw new ParserException("Node already has two children");
+        }
 }
