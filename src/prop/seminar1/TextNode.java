@@ -18,12 +18,17 @@ public class TextNode implements INode {
 
 	@Override
 	public void buildString(StringBuilder builder, int tabs) {
+		for(int i = 0; i < tabs; i++)
+			builder.append("   ");
+		builder.append("Text" + "\n");
+		tabs++;
 	    if(leftChild != null)
-		leftChild.buildString(builder, tabs);
-	    if(rightChild != null)
-		rightChild.buildString(builder, tabs);
+			leftChild.buildString(builder, tabs);
+	    if(rightChild != null) {
+			rightChild.buildString(builder, tabs);
+	    }
 	    if(leftChild == null && rightChild == null)
-		builder.append(text);
+			builder.append(text);
 	}
 
 	public void setLeftChild(INode child) {
@@ -50,9 +55,9 @@ public class TextNode implements INode {
 		return text;
 	}
 	public void bind(INode node) {
-		if(rightChild == null)
-			rightChild = node;
-		else if(leftChild == null)
+		if(leftChild == null)
 			leftChild = node;
+		else if(rightChild == null)
+			rightChild = node;
 	}
 }

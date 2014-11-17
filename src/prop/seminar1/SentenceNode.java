@@ -16,12 +16,19 @@ public class SentenceNode implements INode {
 
 	@Override
 	public void buildString(StringBuilder builder, int tabs) {
+		String tabsString = "";
+		for(int i = 0; i < tabs; i++)
+			tabsString += "   ";
+		builder.append(tabsString + "Sentence" + "\n");
+		tabs++;
 	    if(leftChild != null)
 		leftChild.buildString(builder, tabs);
 	    if(rightChild != null)
 		rightChild.buildString(builder, tabs);
 	    if(leftChild == null && rightChild == null)
 		builder.append(text);
+
+		builder.append(tabsString + ".\n");
 	}
 
 	public void setLeftChild(INode child) {
@@ -53,10 +60,10 @@ public class SentenceNode implements INode {
 		return text;
 	}
 	public void bind(INode node) {
-		if(rightChild == null)
-			rightChild = node;
-		else if(leftChild == null)
+		if(leftChild == null)
 			leftChild = node;
+		else if(rightChild == null)
+			rightChild = node;
 	}
 
 }

@@ -7,11 +7,11 @@ public class DeterminerNode implements INode {
 	private INode leftChild;
 	private INode rightChild;
     
-        public DeterminerNode(Lexeme lexeme){
+    public DeterminerNode(Lexeme lexeme){
 	    leftChild = null;
 	    rightChild = null;
 	    this.lexeme = lexeme;
-        }
+    }
     
 	@Override
 	public Object evaluate(Object[] args) throws Exception {
@@ -21,7 +21,8 @@ public class DeterminerNode implements INode {
 
 	@Override
 	public void buildString(StringBuilder builder, int tabs) {
-	    System.out.println("Determiner Node!");
+	    for(int i = 0; i < tabs; i++)
+			builder.append("   ");
 	    builder.append(lexeme.value() + "\n");
 	}
 	

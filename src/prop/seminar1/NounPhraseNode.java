@@ -15,6 +15,10 @@ public class NounPhraseNode implements INode {
 
 	@Override
 	public void buildString(StringBuilder builder, int tabs) {
+		for(int i = 0; i < tabs; i++)
+			builder.append("   ");
+		builder.append("NounPhrase" + "\n");
+		tabs++;
 	    if(leftChild != null)
 		leftChild.buildString(builder, tabs);
 	    if(rightChild != null)
@@ -46,9 +50,9 @@ public class NounPhraseNode implements INode {
 		this.text = text;
 	}
 	public void bind(INode node) {
-		if(rightChild == null)
-			rightChild = node;
-		else if(leftChild == null)
+		if(leftChild == null)
 			leftChild = node;
+		else if(rightChild == null)
+			rightChild = node;
 	}
 }
