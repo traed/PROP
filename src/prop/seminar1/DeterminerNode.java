@@ -1,17 +1,17 @@
 package prop.seminar1;
 
-public class DelimiterNode implements INode {
+public class DeterminerNode implements INode {
 	
 	private Lexeme lexeme;
 	
 	private INode leftChild;
 	private INode rightChild;
     
-        public DelimiterNode(Lexeme lexeme){
+    public DeterminerNode(Lexeme lexeme){
 	    leftChild = null;
 	    rightChild = null;
 	    this.lexeme = lexeme;
-        }
+    }
     
 	@Override
 	public Object evaluate(Object[] args) throws Exception {
@@ -21,7 +21,9 @@ public class DelimiterNode implements INode {
 
 	@Override
 	public void buildString(StringBuilder builder, int tabs) {
-
+	    for(int i = 0; i < tabs; i++)
+			builder.append("   ");
+	    builder.append(lexeme.value() + "\n");
 	}
 	
         public Lexeme getLexeme(){

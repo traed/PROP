@@ -21,7 +21,9 @@ public class NounNode implements INode {
 
 	@Override
 	public void buildString(StringBuilder builder, int tabs) {
-
+		for(int i = 0; i < tabs; i++)
+			builder.append("   ");
+	    builder.append(lexeme.value() + "\n");
 	}
 
 	public Lexeme getLexeme(){

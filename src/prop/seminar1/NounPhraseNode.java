@@ -15,7 +15,16 @@ public class NounPhraseNode implements INode {
 
 	@Override
 	public void buildString(StringBuilder builder, int tabs) {
-
+		for(int i = 0; i < tabs; i++)
+			builder.append("   ");
+		builder.append("NounPhrase" + "\n");
+		tabs++;
+	    if(leftChild != null)
+		leftChild.buildString(builder, tabs);
+	    if(rightChild != null)
+		rightChild.buildString(builder, tabs);
+	    if(leftChild == null && rightChild == null)
+		builder.append(text);
 	}
 
 	public void setLeftChild(INode child) {
@@ -40,12 +49,10 @@ public class NounPhraseNode implements INode {
 
 		this.text = text;
 	}
-	public void bind(INode node) throws ParserException{
-		if(rightChild != null)
-			rightChild = node;
-		else if(leftChild != null)
+	public void bind(INode node) {
+		if(leftChild == null)
 			leftChild = node;
-		else
-			throw new ParserException("Node already has two children");
+		else if(rightChild == null)
+			rightChild = node;
 	}
 }
