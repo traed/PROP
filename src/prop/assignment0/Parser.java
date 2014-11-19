@@ -6,134 +6,122 @@ import java.util.*;
 public class Parser implements IParser {
 	
 	private Tokenizer tokenizer;
-	private LinkedList<Lexeme> lexemeList;
-	private Lexeme lookahead;
+	private Lexeme previous;
 
 	@Override
 	public void open(String fileName) throws IOException, TokenizerException {
 
 		tokenizer = new Tokenizer();
 		tokenizer.open(fileName);
-		lexemeList = new LinkedList<Lexeme>();
-		INode node;
-		int counter = 0;
-
-		while(tokenizer.moveNext()) {
-			lexemeList.add(tokenizer.current());
-		}
-		tokenizer.close();
+		
 		System.out.println(lexemeList);
 	}
 
 	@Override
 	public INode parse() throws IOException, TokenizerException,
 	ParserException {
-		lookahead = lexemeList.getFirst();
-		INode textNode = text();
 
-		if(lookahead != null)
+		INode node = block();
+
+		if(tokenizer.peek() != null)
 			throw new ParserException("Input error. Reached EOF but not EOF token was found.");
 
-		return textNode;
-	}
-
-	private void nextLex(){
-		lexemeList.pop();
-		if(lexemeList.isEmpty())
-			lookahead = null;
-		else
-			lookahead = lexemeList.getFirst();
+		return node;
 	}
 
 	private INode block(){
 		//block = '{' + stmts + '}' ;
-		return null;
+	    BlockNode block = new BlockNode();
+	    if(tokenizer.current().token() == Token.LEFT_CURLY) {
+	    	block.bind(tokenizer.current());
+	    	tokenizer.moveNext();
+	    }
+
+	    block.bind(stmts());
+
+	    if(tokenizer.current().token() == Token.RIGHT_CURLY) {
+	    	block.bind(tokenizer.current());
+	    	tokenizer.moveNext();
+	    }
+
+	    return block;
 	}
 
 	private INode stmts(){
-		//stmts = [ assign, stmts] ;
-		return null;
+		//stmts = [ assign, stmts ] ;
+		StatementNode stmt = new StatementNode();
+		if(tokenizer.current().token() == Token.IDENT){
+			stmt.bind(assign());
+			stmt.bind(stmt());
+		}
+		return stmt;
 	}
 
 	private INode assign(){
 		//assign = ID, '=', expr, ';' ;
-		return null;
+		AssignmentNode assign = new AssignmentNode();
+		assign.bind(tokenizer.current());
+		tokenizer.moveNext();
+
+		if(tokenizer.current().token() == Token.ASSIGN_OP) {
+			assign.bind(tokenizer.current());
+			tokenizer.moveNext();
+		}
+
+		assign.bind(expr());
+
+		if(tokenizer.current().token() == Token.SEMICOLON) {
+			assign.bind(tokenizer.current());
+			tokenizer.moveNext();
+		}
+		return assign;
 	}
 
 	private INode expr(){
 		//expr = term, [ ('+' | '-' ) , expr] ;
-		return null;
+		ExpressionNode expr = new ExpressionNode();
+		expr.bind(term());
+		if(tokenizer.current().token() == Token.SUB_OP || tokenizer.current().token() == Token.ADD_OP) {
+			expr.bind(tokenizer.current());
+			tokenizer.moveNext();
+			expr.bind(expr());
+		}
+		return expr;
 	}
 
 	private INode term(){
 		//term = factor, [ ( '*' | '/' ) , term] ;
-		return null;
+		TermNode term = new TermNode();
+		term.bind(factor());
+		if(tokenizer.current().token() == Token.MULT_OP || tokenizer.current().token() == Token.DIV_OP) {
+			term.bind(tokenizer.current());
+			tokenizer.moveNext();
+			term.bind(term());
+		}
+		return term;
 	}
 
 	private INode factor(){
 		//factor = INT | ID | '(', expr, ')' ;
+		FactorNode factor = new FactorNode();
+		if(tokenizer.current().token() == Token.INT_LIT || tokenizer.current().token() == Token.IDENT) {
+			factor.bind(tokenizer.current());
+			tokenizer.moveNext();
+		} else if(tokenizer.current().token() == Token.LEFT_PAREN) {
+			factor.bind(tokenizer.current());
+			tokenizer.moveNext();
+			factor.bind(expr());
+			if(tokenizer.current().token() == Token.RIGHT_PAREN) {
+				factor.bind(tokenizer.current());
+				tokenizer.moveNext();
+			}
+		}
+		return factor;
 	}
-
-
-
-
-
-	/*private INode text(){
-		//text = sentence, [text];
-		TextNode text = new TextNode();
-		try{
-			text.bind(sentence());
-		} catch(ParserException pe) {
-			System.err.println(pe.getMessage());
-		}
-		
-		nextLex();
-		if(lookahead != null)
-			text.bind(text());
-
-		return text;
-	}
-	private INode sentence() throws ParserException {
-		//sentence = nounphrase, verbphrase, '.';
-		SentenceNode sentence = new SentenceNode();
-		sentence.bind(nounphrase());
-		sentence.bind(verbphrase());
-		
-		if(lookahead.token() != Token.EOS){
-			throw new ParserException("Reached EOS but no EOS symbol found.");
-		}
-		return sentence;
-	}
-	private INode nounphrase(){
-		//nounphrase = delimiter, noun;
-		NounPhraseNode NPNode = new NounPhraseNode();
-		INode node;
-		if(lookahead.token() == Token.DETERMINER){
-			node = new DeterminerNode(lookahead);
-			nextLex();
-			NPNode.bind(node);
-		}
-		if(lookahead.token() == Token.NOUN){
-			node = new NounNode(lookahead);
-			nextLex();
-			NPNode.bind(node);
-		}
-		return NPNode;
-	}
-	private INode verbphrase(){
-		//verbphrase = verb, nounphrase;
-		VerbPhraseNode VPNode = new VerbPhraseNode();
-		if(lookahead.token() == Token.VERB){
-			INode node = new VerbNode(lookahead);
-			nextLex();
-			VPNode.bind(node);
-		}
-		VPNode.bind(nounphrase());
-		return VPNode;
-	}*/
 
 	@Override
 	public void close() throws IOException {
-		
+	    tokenizer.close();
+	    
 	}
 }
