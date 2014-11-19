@@ -25,22 +25,22 @@ public class Tokenizer implements ITokenizer {
 	public void moveNext() throws IOException, TokenizerException {
 
 		if(scanner != null) { 
-
-			char currentChar = scanner.current();
+			char currentChar;
 			scanner.moveNext();
-			currentChar = scanner.current(); 
-
+			currentChar = scanner.current();
+			
 			if(currentChar == scanner.EOF) {
 				currentLexeme = new Lexeme(currentChar+"", Token.EOF);
 
 			} else if(currentChar == '\n') {
 				moveNext();
-
-			} else if(isWhiteSpace(currentChar)) {
-				lookup(currentChar);
-
-			} else {
+			} else if(currentChar == '\t') {
+				moveNext();
+			} else if(currentChar == ' ') {
 				moveNext();	
+			} else {
+				lookup(currentChar);
+				
 			}
 		}
 	}
@@ -75,9 +75,4 @@ public class Tokenizer implements ITokenizer {
 
 		}
 	}
-
-	private boolean isWhiteSpace(char currentChar) {
-		return (currentChar != ' ') ? true: false;
-	}
-
 }
