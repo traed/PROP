@@ -14,7 +14,6 @@ public class Parser implements IParser {
 		tokenizer = new Tokenizer();
 		tokenizer.open(fileName);
 		
-		//System.out.println(lexemeList);
 	}
 
 	@Override
@@ -24,7 +23,7 @@ public class Parser implements IParser {
 		INode node = block();
 		
 		if(tokenizer.current().token() != Token.EOF)
-			throw new ParserException("Input error. Reached EOF but not EOF token was found.");
+			throw new ParserException("Input error. Reached EOF but no EOF token was found.");
 
 		return node;
 	}
@@ -58,9 +57,9 @@ public class Parser implements IParser {
 		if(tokenizer.current().token() == Token.IDENT){
 			stmt.addChild(assign());
 			stmt.addChild(stmts());
-		} /*else {
-			throw new ParserException("ParserException while creating a statements node: " + tokenizer.current().token() + " instead of IDENTIFIER.");
-		}*/
+		} else if (tokenizer.current().token() != Token.IDENT && tokenizer.current().token() != Token.RIGHT_CURLY) {
+			throw new ParserException("ParserException while creating stmts node: " + tokenizer.current().token() + " when only IDENTIFIER and RIGHT_CURLY allowed.");
+		}
 		return stmt;
 	}
 
@@ -94,13 +93,14 @@ public class Parser implements IParser {
 		ExpressionNode expr = new ExpressionNode();
 		expr.addChild(term());
 		if(tokenizer.current().token() == Token.SUB_OP || tokenizer.current().token() == Token.ADD_OP) {
+			
 			expr.addLexeme(tokenizer.current());
 			tokenizer.moveNext();
 			expr.addChild(expr());
+		
+		} else if (tokenizer.current().token() != Token.INT_LIT && tokenizer.current().token() != Token.IDENT && tokenizer.current().token() != Token.RIGHT_PAREN && tokenizer.current().token() != Token.SEMICOLON) {
+			throw new ParserException("ParserException while creating expression node: " + tokenizer.current().token() + " when only SUB_OP, ADD_OP, INT, IDENTIFIER or LEFT_PARENTHESIS allowed.");
 		}
-		/*else {
-			throw new ParserException("ParserException while creating expression node: " + tokenizer.current().token() + " instead of SUB or ADD op");
-		}*/
 		return expr;
 	}
 
@@ -113,7 +113,9 @@ public class Parser implements IParser {
 			term.addLexeme(tokenizer.current());
 			tokenizer.moveNext();
 			term.addChild(term());
-		} 
+		} else if (tokenizer.current().token() != Token.SUB_OP && tokenizer.current().token() != Token.ADD_OP && tokenizer.current().token() != Token.INT_LIT && tokenizer.current().token() != Token.IDENT && tokenizer.current().token() != Token.RIGHT_PAREN && tokenizer.current().token() != Token.SEMICOLON) {
+			throw new ParserException("ParserException while creating Term Node: " + tokenizer.current().token() + " when not expected");
+		}
 		return term;
 	}
 
@@ -134,8 +136,8 @@ public class Parser implements IParser {
 			} else {
 				throw new ParserException("ParserException while creating factor node: " + tokenizer.current().token() + " instead of RIGHT_PARENTHESIS");
 			}
-		} else {
-			throw new ParserException("ParserException while creating factor node: " + tokenizer.current().token() + " instead of LEFT_PARENTHESIS");
+		} else if (tokenizer.current().token() != Token.MULT_OP && tokenizer.current().token() != Token.DIV_OP && tokenizer.current().token() != Token.INT_LIT && tokenizer.current().token() != Token.IDENT && tokenizer.current().token() != Token.LEFT_PAREN) {
+			throw new ParserException("ParserException while creating factor node: " + tokenizer.current().token() + " instead of MULT_OP, DIV_OP, INT, IDENTIFIER or LEFT_PARANTHESIS");
 		}
 		return factor;
 	}
