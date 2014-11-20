@@ -33,14 +33,14 @@ public class Parser implements IParser {
 		//block = '{' + stmts + '}' ;
 	    BlockNode block = new BlockNode();
 	    if(tokenizer.current().token() == Token.LEFT_CURLY) {
-	    	block.bind(tokenizer.current());
+	    	block.addLexeme(tokenizer.current());
 	    	tokenizer.moveNext();
 	    }
 
-	    block.bind(stmts());
+	    block.addChild(stmts());
 
 	    if(tokenizer.current().token() == Token.RIGHT_CURLY) {
-	    	block.bind(tokenizer.current());
+	    	block.addLexeme(tokenizer.current());
 	    	tokenizer.moveNext();
 	    }
 
@@ -51,8 +51,8 @@ public class Parser implements IParser {
 		//stmts = [ assign, stmts ] ;
 		StatementNode stmt = new StatementNode();
 		if(tokenizer.current().token() == Token.IDENT){
-			stmt.bind(assign());
-			stmt.bind(stmt());
+			stmt.addChild(assign());
+			stmt.addChild(stmt());
 		}
 		return stmt;
 	}
@@ -60,18 +60,18 @@ public class Parser implements IParser {
 	private INode assign(){
 		//assign = ID, '=', expr, ';' ;
 		AssignmentNode assign = new AssignmentNode();
-		assign.bind(tokenizer.current());
+		assign.addLexeme(tokenizer.current());
 		tokenizer.moveNext();
 
 		if(tokenizer.current().token() == Token.ASSIGN_OP) {
-			assign.bind(tokenizer.current());
+			assign.addLexeme(tokenizer.current());
 			tokenizer.moveNext();
 		}
 
-		assign.bind(expr());
+		assign.addChild(expr());
 
 		if(tokenizer.current().token() == Token.SEMICOLON) {
-			assign.bind(tokenizer.current());
+			assign.addLexeme(tokenizer.current());
 			tokenizer.moveNext();
 		}
 		return assign;
@@ -80,11 +80,11 @@ public class Parser implements IParser {
 	private INode expr(){
 		//expr = term, [ ('+' | '-' ) , expr] ;
 		ExpressionNode expr = new ExpressionNode();
-		expr.bind(term());
+		expr.addChild(term());
 		if(tokenizer.current().token() == Token.SUB_OP || tokenizer.current().token() == Token.ADD_OP) {
-			expr.bind(tokenizer.current());
+			expr.addLexeme(tokenizer.current());
 			tokenizer.moveNext();
-			expr.bind(expr());
+			expr.addChild(expr());
 		}
 		return expr;
 	}
@@ -92,11 +92,11 @@ public class Parser implements IParser {
 	private INode term(){
 		//term = factor, [ ( '*' | '/' ) , term] ;
 		TermNode term = new TermNode();
-		term.bind(factor());
+		term.addChild(factor());
 		if(tokenizer.current().token() == Token.MULT_OP || tokenizer.current().token() == Token.DIV_OP) {
-			term.bind(tokenizer.current());
+			term.addLexeme(tokenizer.current());
 			tokenizer.moveNext();
-			term.bind(term());
+			term.addChild(term());
 		}
 		return term;
 	}
@@ -105,14 +105,14 @@ public class Parser implements IParser {
 		//factor = INT | ID | '(', expr, ')' ;
 		FactorNode factor = new FactorNode();
 		if(tokenizer.current().token() == Token.INT_LIT || tokenizer.current().token() == Token.IDENT) {
-			factor.bind(tokenizer.current());
+			factor.addLexeme(tokenizer.current());
 			tokenizer.moveNext();
 		} else if(tokenizer.current().token() == Token.LEFT_PAREN) {
-			factor.bind(tokenizer.current());
+			factor.addLexeme(tokenizer.current());
 			tokenizer.moveNext();
-			factor.bind(expr());
+			factor.addChild(expr());
 			if(tokenizer.current().token() == Token.RIGHT_PAREN) {
-				factor.bind(tokenizer.current());
+				factor.addLexeme(tokenizer.current());
 				tokenizer.moveNext();
 			}
 		}
