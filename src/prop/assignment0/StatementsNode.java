@@ -1,6 +1,6 @@
 package prop.assignment0;
 
-public class StatementNode implements INode {
+public class StatementsNode implements INode {
 
 	private INode child1, child2;
 
@@ -12,7 +12,14 @@ public class StatementNode implements INode {
 
 	@Override
 	public void buildString(StringBuilder builder, int tabs) {
-		// TODO Auto-generated method stub
+		for(int i = 0; i < tabs; i++)
+			builder.append("\t");
+		builder.append("StatementsNode\n");
+		tabs++;
+		if(child1 != null)
+			child1.buildString(builder, tabs);
+		if(child2 != null)
+			child2.buildString(builder, tabs);
 		
 	}
 

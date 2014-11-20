@@ -13,8 +13,25 @@ public class AssignmentNode implements INode {
 
 	@Override
 	public void buildString(StringBuilder builder, int tabs) {
-		// TODO Auto-generated method stub
+		for(int i = 0; i < tabs; i++)
+			builder.append("\t");
+		builder.append("AssignmentNode\n");
+		tabs++;
 		
+		for(int i = 0; i < tabs; i++)
+			builder.append("\t");
+		builder.append(lexeme1.token() + " " + lexeme1.value() + "\n");
+		
+		for(int i = 0; i < tabs; i++)
+			builder.append("\t");
+		builder.append(lexeme2.token() + " " + lexeme2.value() + "\n");
+
+		if(child != null)
+			child.buildString(builder, tabs);
+
+		for(int i = 0; i < tabs; i++)
+			builder.append("\t");
+		builder.append(lexeme3.token() + " " + lexeme3.value() + "\n");
 	}
 
 	public void addLexeme(Lexeme lex) {

@@ -13,8 +13,11 @@ public class BlockNode implements INode {
 
 	@Override
 	public void buildString(StringBuilder builder, int tabs) {
-		// TODO Auto-generated method stub
-		
+		builder.append("BlockNode\n" + lexeme1.token() + " " + lexeme1.value() + "\n");
+		tabs++;
+		if(child != null)
+			child.buildString(builder, tabs);
+		builder.append(lexeme2.token() + " " + lexeme2.value() + "\n");
 	}
 
 	public void addLexeme(Lexeme lex) {
