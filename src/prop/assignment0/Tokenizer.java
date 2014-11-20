@@ -50,7 +50,7 @@ public class Tokenizer implements ITokenizer {
 		scanner.close();
 	}
 	
-	private void lookup(char currentChar) {
+	private void lookup(char currentChar) throws TokenizerException {
 
 		String matchString = currentChar+"";
 
@@ -73,6 +73,9 @@ public class Tokenizer implements ITokenizer {
 			else if(matchString.matches("\\d"))
 				currentLexeme = new Lexeme(matchString, Token.INT_LIT);
 
+			else {
+				throw new TokenizerException("TokenizerException: Unsupported character " + matchString);
+			}
 		}
 	}
 }
