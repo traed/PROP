@@ -1,4 +1,4 @@
-package prop.seminar1;
+package prop.assignment0;
 
 import java.io.IOException;
 import java.util.*;
@@ -14,7 +14,7 @@ public class Parser implements IParser {
 		tokenizer = new Tokenizer();
 		tokenizer.open(fileName);
 		
-		System.out.println(lexemeList);
+		//System.out.println(lexemeList);
 	}
 
 	@Override
@@ -23,13 +23,13 @@ public class Parser implements IParser {
 
 		INode node = block();
 
-		if(tokenizer.peek() != null)
+		if(tokenizer.current().token() != Token.EOF)
 			throw new ParserException("Input error. Reached EOF but not EOF token was found.");
 
 		return node;
 	}
 
-	private INode block(){
+	private INode block() throws IOException, TokenizerException {
 		//block = '{' + stmts + '}' ;
 	    BlockNode block = new BlockNode();
 	    if(tokenizer.current().token() == Token.LEFT_CURLY) {
@@ -47,17 +47,17 @@ public class Parser implements IParser {
 	    return block;
 	}
 
-	private INode stmts(){
+	private INode stmts() throws IOException, TokenizerException {
 		//stmts = [ assign, stmts ] ;
 		StatementNode stmt = new StatementNode();
 		if(tokenizer.current().token() == Token.IDENT){
 			stmt.addChild(assign());
-			stmt.addChild(stmt());
+			stmt.addChild(stmts());
 		}
 		return stmt;
 	}
 
-	private INode assign(){
+	private INode assign() throws IOException, TokenizerException {
 		//assign = ID, '=', expr, ';' ;
 		AssignmentNode assign = new AssignmentNode();
 		assign.addLexeme(tokenizer.current());
@@ -77,7 +77,7 @@ public class Parser implements IParser {
 		return assign;
 	}
 
-	private INode expr(){
+	private INode expr() throws IOException, TokenizerException {
 		//expr = term, [ ('+' | '-' ) , expr] ;
 		ExpressionNode expr = new ExpressionNode();
 		expr.addChild(term());
@@ -89,7 +89,7 @@ public class Parser implements IParser {
 		return expr;
 	}
 
-	private INode term(){
+	private INode term() throws IOException, TokenizerException {
 		//term = factor, [ ( '*' | '/' ) , term] ;
 		TermNode term = new TermNode();
 		term.addChild(factor());
@@ -101,7 +101,7 @@ public class Parser implements IParser {
 		return term;
 	}
 
-	private INode factor(){
+	private INode factor() throws IOException, TokenizerException {
 		//factor = INT | ID | '(', expr, ')' ;
 		FactorNode factor = new FactorNode();
 		if(tokenizer.current().token() == Token.INT_LIT || tokenizer.current().token() == Token.IDENT) {
