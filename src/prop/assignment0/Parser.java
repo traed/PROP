@@ -53,7 +53,7 @@ public class Parser implements IParser {
 
 	private INode stmts() throws IOException, TokenizerException, ParserException {
 		//stmts = [ assign, stmts ] ;
-		StatementNode stmt = new StatementNode();
+		StatementsNode stmt = new StatementsNode();
 		
 		if(tokenizer.current().token() == Token.IDENT){
 			stmt.addChild(assign());
