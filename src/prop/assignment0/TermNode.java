@@ -7,8 +7,14 @@ public class TermNode implements INode {
 
 	@Override
 	public Object evaluate(Object[] args) throws Exception {
-		// TODO Auto-generated method stub
-		return null;
+		if(child2 != null) {
+			double i = (double)child1.evaluate(args).value();
+			double j = (double)child2.evaluate(args).value();
+			if(lexeme.token() == Token.MULT_OP)
+				return i * j;
+			return i / j;
+		}
+		return (double)child1.evaluate(args).value();
 	}
 
 	@Override

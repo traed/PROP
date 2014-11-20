@@ -7,8 +7,7 @@ public class AssignmentNode implements INode {
 
 	@Override
 	public Object evaluate(Object[] args) throws Exception {
-		// TODO Auto-generated method stub
-		return null;
+		return new Statement(lexeme1, (double)child.evaluate(args));
 	}
 
 	@Override
@@ -45,5 +44,9 @@ public class AssignmentNode implements INode {
 
 	public void addChild(INode node) {
 		child = node;
+	}
+
+	public Lexeme getIdent() {
+		return lexeme1;
 	}
 }

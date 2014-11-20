@@ -6,7 +6,23 @@ public class StatementsNode implements INode {
 
 	@Override
 	public Object evaluate(Object[] args) throws Exception {
-		// TODO Auto-generated method stub
+		if(child1 != null) {
+			Statement statement = (Statement)child1.evaluate(args);
+			StringBuilder sb = new StringBuilder();
+			sb.append("" + child1.getIdent().value() + " = " + statement.getIdentifier().value() + "\n");
+			
+			for(Object o : args) {
+				if(o == null) {
+					o = statement;
+					break;
+				}
+			}
+
+			if(child2 != null)
+				sb.append(child2.evaluate(args));
+
+			return sb.toString();
+		}
 		return null;
 	}
 

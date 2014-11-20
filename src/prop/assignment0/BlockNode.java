@@ -7,7 +7,9 @@ public class BlockNode implements INode {
 
 	@Override
 	public Object evaluate(Object[] args) throws Exception {
-		// TODO Auto-generated method stub
+		Object[] statementArray = new Object[1024];
+		if(child != null)
+			return child.evaluate(statementArray);
 		return null;
 	}
 

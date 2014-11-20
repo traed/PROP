@@ -7,8 +7,16 @@ public class FactorNode implements INode {
 
 	@Override
 	public Object evaluate(Object[] args) throws Exception {
-		// TODO Auto-generated method stub
-		return null;
+		if(lexeme2 != null) {
+			return child.evaluate(args);	
+		}
+		if(lexeme1.token() == Token.IDENT){
+			for(Statement s : (Statement)args){
+				if(s.getIdentifier().value().equals(lexeme1.value()))
+					return new Lexeme(Token.INT_LIT, s.getValue());
+			}
+		}
+		return lexeme1;
 	}
 
 	@Override
