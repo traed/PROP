@@ -53,7 +53,7 @@ public class Parser implements IParser {
 
 	private INode stmts() throws IOException, TokenizerException, ParserException {
 		//stmts = [ assign, stmts ] ;
-		StatementsNode stmt = new StatementsNode();
+		StatementNode stmt = new StatementNode();
 		
 		if(tokenizer.current().token() == Token.IDENT){
 			stmt.addChild(assign());
@@ -121,8 +121,6 @@ public class Parser implements IParser {
 		//factor = INT | ID | '(', expr, ')' ;
 		FactorNode factor = new FactorNode();
 		if(tokenizer.current().token() == Token.INT_LIT || tokenizer.current().token() == Token.IDENT) {
-			System.out.println("hej");
-
 			factor.addLexeme(tokenizer.current());
 			tokenizer.moveNext();
 		} else if(tokenizer.current().token() == Token.LEFT_PAREN) {
