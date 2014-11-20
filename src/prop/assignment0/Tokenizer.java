@@ -71,7 +71,7 @@ public class Tokenizer implements ITokenizer {
 				currentLexeme = new Lexeme(matchString, Token.IDENT);
 
 			else if(matchString.matches("\\d"))
-				currentLexeme = new Lexeme(matchString, Token.INT_LIT);
+				currentLexeme = new Lexeme(Double.parseDouble(matchString), Token.INT_LIT);
 
 			else {
 				throw new TokenizerException("TokenizerException: Unsupported character " + matchString);
