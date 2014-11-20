@@ -13,8 +13,6 @@ public class Parser implements IParser {
 
 		tokenizer = new Tokenizer();
 		tokenizer.open(fileName);
-		
-		System.out.println(lexemeList);
 	}
 
 	@Override
@@ -23,7 +21,7 @@ public class Parser implements IParser {
 
 		INode node = block();
 
-		if(tokenizer.peek() != null)
+		if(tokenizer.current().token() != Token.EOF)
 			throw new ParserException("Input error. Reached EOF but not EOF token was found.");
 
 		return node;
@@ -122,6 +120,5 @@ public class Parser implements IParser {
 	@Override
 	public void close() throws IOException {
 	    tokenizer.close();
-	    
 	}
 }
