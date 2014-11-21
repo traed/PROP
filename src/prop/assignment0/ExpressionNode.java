@@ -7,11 +7,11 @@ public class ExpressionNode implements INode {
 
 	@Override
 	public Object evaluate(Object[] args) throws Exception {
+		
 		if(child2 != null) {
-
+			Statement stmnt = new Statement(null, 0);
 			String i = child1.evaluate(args).toString();
 			String j = child2.evaluate(args).toString();
-			System.out.println("i:"+i +" j:"+ j);
 			double iD = 0;
 			double jD = 0;
 
@@ -20,29 +20,27 @@ public class ExpressionNode implements INode {
 				jD = Double.parseDouble(j);
 
 			} catch (NumberFormatException e) {
-				System.out.println("NumberFormatException in ExprNode: " + i + " || " + j + " != double");
 
 				for(int iterator = 0; iterator < args.length; iterator++) {
-					Statement stmnt = (Statement)args[iterator];
 
-					if(stmnt.getIdentifier().value().equals(i)) {
-						System.out.println("identifier i in ExpressionNode");
-						iD = stmnt.getValue();
-						break;
+					if(args[iterator] != null && args[iterator].getClass() == stmnt.getClass()) {
+						stmnt = (Statement)args[iterator];
 
-					} else if (stmnt.getIdentifier().value().equals(j)) {
-						System.out.println("identifier j in ExpressionNode");
-						jD = stmnt.getValue();
-						break;
+						if(stmnt.getIdentifier().value().equals(i)) {
+							iD = stmnt.getValue();
+							
+
+						} else if (stmnt.getIdentifier().value().equals(j)) {
+							jD = stmnt.getValue();
+
+						}
 					}
 				}
 			}
-			
+
 			if(lexeme.token() == Token.ADD_OP) {
-				System.out.println("Operator +");
 				return iD + jD;
 			} else {
-				System.out.println("operator -");
 				return iD - jD;
 			}
 		}

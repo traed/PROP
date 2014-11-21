@@ -15,7 +15,7 @@ public class StatementsNode implements INode {
 				
 				if(args[i] == null) {
 					args[i] = statement;
-					System.out.println("added");
+
 					break;
 				}
 			}

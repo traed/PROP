@@ -9,13 +9,7 @@ public class AssignmentNode implements INode {
 	public Object evaluate(Object[] args) throws Exception {
 		
 		Object o = child.evaluate(args);
-		
-		if(o.getClass().equals(Double.class)) {
-			System.out.println("Double");
-			
-		} else if (o.getClass().equals(String.class)) {
-			System.out.println("String");
-		}
+
 		return new Statement(lexeme1, (double)o);
 	}
 
