@@ -7,7 +7,7 @@ public class BlockNode implements INode {
 
 	@Override
 	public Object evaluate(Object[] args) throws Exception {
-		Object[] statementArray = new Object[1024];
+		Statement[] statementArray = new Statement[1024];
 		if(child != null)
 			return child.evaluate(statementArray);
 		

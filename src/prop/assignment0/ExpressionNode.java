@@ -12,21 +12,39 @@ public class ExpressionNode implements INode {
 			String i = child1.evaluate(args).toString();
 			String j = child2.evaluate(args).toString();
 			System.out.println("i:"+i +" j:"+ j);
-			
+			double iD = 0;
+			double jD = 0;
+
 			try {
-				double iD = Double.parseDouble(i);
-				double jD = Double.parseDouble(j);
-				
-				if(lexeme.token() == Token.ADD_OP)
-					return iD + jD;
-				return iD - jD;
-			
+				iD = Double.parseDouble(i);
+				jD = Double.parseDouble(j);
+
 			} catch (NumberFormatException e) {
 				System.out.println("NumberFormatException in ExprNode: " + i + " || " + j + " != double");
-				
-				return i + j;
-			}
 
+				for(int iterator = 0; iterator < args.length; iterator++) {
+					Statement stmnt = (Statement)args[iterator];
+
+					if(stmnt.getIdentifier().value().equals(i)) {
+						System.out.println("identifier i in ExpressionNode");
+						iD = stmnt.getValue();
+						break;
+
+					} else if (stmnt.getIdentifier().value().equals(j)) {
+						System.out.println("identifier j in ExpressionNode");
+						jD = stmnt.getValue();
+						break;
+					}
+				}
+			}
+			
+			if(lexeme.token() == Token.ADD_OP) {
+				System.out.println("Operator +");
+				return iD + jD;
+			} else {
+				System.out.println("operator -");
+				return iD - jD;
+			}
 		}
 		return child1.evaluate(args);
 	}

@@ -10,7 +10,16 @@ public class StatementsNode implements INode {
 			Statement statement = (Statement)child1.evaluate(args);
 			StringBuilder sb = new StringBuilder();
 			sb.append("" + statement.getIdentifier().value() + " = " + statement.getValue() + "\n");
-
+			
+			for(int i = 0; i < args.length; i++) {
+				
+				if(args[i] == null) {
+					args[i] = statement;
+					System.out.println("added");
+					break;
+				}
+			}
+			
 			if(child2 != null) {
 				Object o = child2.evaluate(args);
 				
@@ -21,9 +30,6 @@ public class StatementsNode implements INode {
 			return sb.toString();
 
 		}
-
-
-
 
 		return null;
 	}
