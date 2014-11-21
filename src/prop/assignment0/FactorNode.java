@@ -11,12 +11,15 @@ public class FactorNode implements INode {
 			return child.evaluate(args);	
 		}
 		if(lexeme1.token() == Token.IDENT){
-			for(Statement s : (Statement)args){
-				if(s.getIdentifier().value().equals(lexeme1.value()))
-					return new Lexeme(Token.INT_LIT, s.getValue());
-			}
+			/*for(int i = 0; i < args.length; i++){
+				Statement stmt = (Statement)args[i];
+				System.out.println("happens");
+				
+				if(stmt.getIdentifier().value() == lexeme1.value())
+					return new Lexeme(stmt.getValue(), Token.INT_LIT);
+			}*/
 		}
-		return lexeme1;
+		return lexeme1.value();
 	}
 
 	@Override

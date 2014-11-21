@@ -10,6 +10,8 @@ public class BlockNode implements INode {
 		Object[] statementArray = new Object[1024];
 		if(child != null)
 			return child.evaluate(statementArray);
+		
+
 		return null;
 	}
 

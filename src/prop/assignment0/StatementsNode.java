@@ -9,20 +9,22 @@ public class StatementsNode implements INode {
 		if(child1 != null) {
 			Statement statement = (Statement)child1.evaluate(args);
 			StringBuilder sb = new StringBuilder();
-			sb.append("" + child1.getIdent().value() + " = " + statement.getIdentifier().value() + "\n");
-			
-			for(Object o : args) {
-				if(o == null) {
-					o = statement;
-					break;
-				}
+			sb.append("" + statement.getIdentifier().value() + " = " + statement.getValue() + "\n");
+
+			if(child2 != null) {
+				Object o = child2.evaluate(args);
+				
+				if(o != null)
+					return sb.append(o);
 			}
 
-			if(child2 != null)
-				sb.append(child2.evaluate(args));
-
 			return sb.toString();
+
 		}
+
+
+
+
 		return null;
 	}
 
@@ -36,7 +38,7 @@ public class StatementsNode implements INode {
 			child1.buildString(builder, tabs);
 		if(child2 != null)
 			child2.buildString(builder, tabs);
-		
+
 	}
 
 	public void addChild(INode child) {

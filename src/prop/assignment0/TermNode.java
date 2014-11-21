@@ -8,13 +8,24 @@ public class TermNode implements INode {
 	@Override
 	public Object evaluate(Object[] args) throws Exception {
 		if(child2 != null) {
-			double i = (double)child1.evaluate(args).value();
-			double j = (double)child2.evaluate(args).value();
+			String i = child1.evaluate(args).toString();
+			String j = child2.evaluate(args).toString();
+			System.out.println("TermNode " + i + " " + j);
+			try {
+			double iD = Double.parseDouble(i);
+			double jD = Double.parseDouble(j);
+			
 			if(lexeme.token() == Token.MULT_OP)
-				return i * j;
-			return i / j;
+				return iD * jD;
+			
+			return iD / jD;
+			
+			} catch (NumberFormatException e) {
+				System.out.println("NumberFormatException in TermNode: i:" + i + " j:" +j);
+			}
+
 		}
-		return (double)child1.evaluate(args).value();
+		return child1.evaluate(args);
 	}
 
 	@Override

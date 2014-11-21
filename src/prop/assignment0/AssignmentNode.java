@@ -7,7 +7,16 @@ public class AssignmentNode implements INode {
 
 	@Override
 	public Object evaluate(Object[] args) throws Exception {
-		return new Statement(lexeme1, (double)child.evaluate(args));
+		
+		Object o = child.evaluate(args);
+		
+		if(o.getClass().equals(Double.class)) {
+			System.out.println("Double");
+			
+		} else if (o.getClass().equals(String.class)) {
+			System.out.println("String");
+		}
+		return new Statement(lexeme1, (double)o);
 	}
 
 	@Override

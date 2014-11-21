@@ -8,13 +8,27 @@ public class ExpressionNode implements INode {
 	@Override
 	public Object evaluate(Object[] args) throws Exception {
 		if(child2 != null) {
-			double i = (double)child1.evaluate(args).value();
-			double j = (double)child2.evaluate(args).value();
-			if(lexeme.token() == Token.ADD_OP)
+
+			String i = child1.evaluate(args).toString();
+			String j = child2.evaluate(args).toString();
+			System.out.println("i:"+i +" j:"+ j);
+			
+			try {
+				double iD = Double.parseDouble(i);
+				double jD = Double.parseDouble(j);
+				
+				if(lexeme.token() == Token.ADD_OP)
+					return iD + jD;
+				return iD - jD;
+			
+			} catch (NumberFormatException e) {
+				System.out.println("NumberFormatException in ExprNode: " + i + " || " + j + " != double");
+				
 				return i + j;
-			return i - j;
+			}
+
 		}
-		return (double)child1.evaluate(args).value();
+		return child1.evaluate(args);
 	}
 
 	@Override
